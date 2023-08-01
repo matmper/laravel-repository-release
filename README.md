@@ -15,8 +15,8 @@ Package to simplify the use of repositories in Laravel
 </p>
 
 # Dependences
-- PHP >= 8.0 ([Doc](https://www.php.net/releases/8.0/pt_BR.php))
-- Laravel >= 9.x ([Doc](https://laravel.com/docs/9.x/releases))
+- PHP >= 8.0.2 ([Doc](https://www.php.net/releases/8.0/pt_BR.php))
+- Laravel >= 9.1.15 ([Doc](https://laravel.com/docs/9.x/releases))
 
 # Install
 
