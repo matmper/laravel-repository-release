@@ -25,3 +25,9 @@ phpcbf:
 
 repository-create:
 	php artisan repository:create $(model)
+
+mkdocs-serve:
+	python3 -m mkdocs serve
+
+mkdocs-build:
+	python3 -m mkdocs build --clean

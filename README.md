@@ -56,62 +56,13 @@ class UserRepository extends BaseRepository
 }
 ```
 
-## Code
+## Documentation
 
-**Documentation:** Soon!
+Access: [laravel-repository-release](https://matheusp.com.br/laravel-repository-release)
 
-```php
-use \App\Repositories\UserRepository;
-
-public function __construct(private UserRepository $userRepository)
-{
-    //
-}
-
-public function index(): Collection
-{
-    return $this->userRepository->get(
-        ['id >' => 0], // where
-        ['id', 'name'], // columns
-        ['id' => 'DESC'] // order by
-    );
-}
-
-public function show(int $id): Model
-{
-    return $this->userRepository->findOrFail($id, ['id', 'name']);
-}
-
-public function store($request): Model
-{
-    return $this->userRepository->create([
-        'name' => $request->name,
-    ]);
-}
-
-public function update(int $id, $request): Model
-{
-    // $user = $this->userRepository->findOrFail($id, ['*']);
-    // return $this->userRepository->updateCollection($user, ['name' => ...]);
-
-    return $this->userRepository->update($id, [
-        'name' => $request->name,
-    ]);
-}
-
-public function delete(int $id): bool
-{
-    // return $this->userRepository->forceDelete($id);
-    return $this->userRepository->delete($id);
-}
-
-public function restore(int $id): bool
-{
-    return $this->userRepository->restore($id); // Necessary SoftDelete
-}
-```
-
----
+| laravel-repository-release version | Laravel versions |
+|---|---|
+| 1.x  | 9 / 10 |
 
 ## Contribution & Development
 
