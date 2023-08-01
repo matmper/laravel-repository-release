@@ -317,6 +317,7 @@ class BaseRepository
         }
         
         if ($this->withTrashed) {
+            /** @phpstan-ignore-next-line */
             $query->withTrashed();
         }
 
