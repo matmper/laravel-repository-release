@@ -1,0 +1,6 @@
+composer.phar
+.phpunit.result.cache
+/vendor/
+/coverage/
+/logs/
+.DS_Store
