@@ -17,16 +17,24 @@ class BaseRepository
     protected $model;
 
     /**
+     * Check if model has soft delete trait
+     *
+     * @var bool
+     */
+    private $isSoftDelete = false;
+
+    /**
      * Use Eloquent withTrashed method
      *
      * @var boolean
      */
-    private $withTrashed;
+    private $withTrashed = false;
 
     public function __construct()
     {
-        $this->withTrashed = Config::get('repository.default.with_trashed', false);
         $this->model = app($this->model);
+        $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
+        $this->withTrashed = $this->isSoftDelete && Config::get('repository.default.with_trashed', false);
     }
 
     /**
@@ -36,7 +44,7 @@ class BaseRepository
      */
     public function withTrashed(): self
     {
-        $this->withTrashed = true;
+        $this->withTrashed = $this->isSoftDelete;
         return $this;
     }
 
@@ -288,14 +296,52 @@ class BaseRepository
     }
 
     /**
+     * Eloquent model: restore
+     *
+     * @param integer $itemPrimaryKey
+     * @return boolean
+     * @throws \Matmper\Exceptions\OnlyModelsWithSoftDeleteException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
+     */
+    public function restore(int $itemPrimaryKey): bool
+    {
+        if (!$this->isSoftDelete) {
+            throw new \Matmper\Exceptions\OnlyModelsWithSoftDeleteException('restore');
+        }
+        
+        /** @phpstan-ignore-next-line */
+        return $this->query()->withTrashed()->findOrFail($itemPrimaryKey)->restore();
+    }
+
+    /**
      * Eloquent model: delete
      *
      * @param integer $itemPrimaryKey
      * @return boolean
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public function delete(int $itemPrimaryKey): bool
     {
         return $this->query()->findOrFail($itemPrimaryKey, ['id'])->delete();
+    }
+
+    /**
+     * Eloquent model: force delete
+     *
+     * @param integer $itemPrimaryKey
+     * @return boolean
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
+     */
+    public function forceDelete(int $itemPrimaryKey): bool
+    {
+        $query = $this->query()->findOrFail($itemPrimaryKey, ['id']);
+
+        if ($this->isSoftDelete) {
+            /** @phpstan-ignore-next-line */
+            $query->withTrashed();
+        }
+
+        return $query->forceDelete();
     }
 
     /**

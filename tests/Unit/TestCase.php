@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Database\Migrations\CreateCountriesTable;
 use Database\Migrations\CreateUsersTable;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Config;
@@ -54,7 +55,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     private function migrate(): void
     {
-        $migrates = [new CreateUsersTable];
+        $migrates = [
+            new CreateUsersTable,
+            new CreateCountriesTable,
+        ];
 
         foreach ($migrates as $migrate) {
             $migrate->up();
@@ -68,7 +72,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     private function rollback(): void
     {
-        $migrates = [new CreateUsersTable];
+        $migrates = [
+            new CreateUsersTable,
+            new CreateCountriesTable,
+        ];
 
         foreach ($migrates as $migrate) {
             $migrate->down();
