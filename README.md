@@ -58,15 +58,52 @@ class UserRepository extends BaseRepository
 
 ## Code
 
+**Documentation:** Soon!
+
 ```php
-public function show (int $id): User
+use \App\Repositories\UserRepository;
+
+public function __construct(private UserRepository $userRepository)
 {
-    $userRepository = new \App\Repositories\UserRepository;
-    return $userRepository->findOrFail($id);
+    //
+}
+
+public function index(): array
+{
+    return $this->userRepository->get(
+        ['id >' => 0], // where
+        ['id', 'name'], // columns
+        ['id' => 'DESC'] // order by
+    )->toArray();
+}
+
+public function show(int $id): array
+{
+    return $this->userRepository->findOrFail($id, ['id', 'name'])->toArray();
+}
+
+public function store($request): array
+{
+    return $this->userRepository->create([
+        'name' => $request->name,
+    ]);
+}
+
+public function update(int $id, $request): array
+{
+    // $user = $this->userRepository->findOrFail($id, ['*']);
+    // return $this->userRepository->updateCollection($user, ['name' => ...]);
+
+    return $this->userRepository->update($id, [
+        'name' => $request->name,
+    ]);
+}
+
+public function delete(int $id): array
+{
+    return $this->userRepository->delete($id);
 }
 ```
-
-This is will out
 
 ---
 
