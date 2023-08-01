@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://laravel-repository-release.matheusp.com.br/quick-start/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://laravel-repository-release.matheusp.com.br/usage/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Quick Start - laravel-repository-release</title>
+    <title>Usage - laravel-repository-release</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Quick Start";
-        var mkdocs_page_input_path = "quick-start.md";
-        var mkdocs_page_url = "/quick-start/";
+        var mkdocs_page_name = "Usage";
+        var mkdocs_page_input_path = "usage.md";
+        var mkdocs_page_url = "/usage/";
       </script>
     
     <!--[if lt IE 9]>
@@ -47,14 +47,16 @@
                 <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Quick Start</a>
-    <ul class="current">
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quick-start/">Quick Start</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Usage</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#query-methoda">Query methoda</a>
+    </li>
+    </ul>
                 </li>
               </ul>
       </div>
@@ -71,7 +73,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-      <li class="breadcrumb-item active">Quick Start</li>
+      <li class="breadcrumb-item active">Usage</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -80,48 +82,68 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="quick-start">Quick Start</h1>
-<p>In the quick guide we will exemplify the use of a <strong>User Model</strong> repository!</p>
-<p>Run the command below to generate the <code>app/Repositories/UserRepository.php</code> file:</p>
-<pre><code class="language-bash">$ php artisan repository:create User
-</code></pre>
-<p>An alternative is to generate all pending repositories:</p>
-<pre><code>$ php artisan repository:create all
-</code></pre>
-<p>This is an example of the generated <code>UserRepository.php</code> file.</p>
-<pre><code class="language-php">namespace App\Repositories;
-
-use Matmper\Repositories\BaseRepository;
-use App\Models\User;
-
-final class UserRepository extends BaseRepository
-{
-    /**
-     * @var User
-     */
-    protected $model = User::class;
-}
-</code></pre>
-<p>User Repository is ready to use.
-Instantiate the package in the desired service and call the desired method.</p>
+                <h1 id="usage">Usage</h1>
+<p>Instantiate the package in the desired service and call the desired method.</p>
+<p>Load class with constructor property:</p>
 <pre><code class="language-php">use \App\Repositories\UserRepository;
 
 public function __construct(private UserRepository $userRepository)
 {
     //
 }
+</code></pre>
+<p>As above, the repository will be stored in <code>$this-&gt;userRepository</code>, but it is also possible to load and use individually:</p>
+<pre><code class="language-php">$userRepository = new \App\Repositories\UserRepository;
+$user = $userRepository-&gt;findOrFail(1);
+</code></pre>
+<h2 id="query-methoda">Query methoda</h2>
+<pre><code class="language-php">public function index(): Collection
+{
+    return $this-&gt;userRepository-&gt;get(
+        ['id &gt;' =&gt; 0], // where
+        ['id', 'name'], // columns
+        ['id' =&gt; 'DESC'] // order by
+    );
+}
 
 public function show(int $id): Model
 {
     return $this-&gt;userRepository-&gt;findOrFail($id, ['id', 'name']);
+}
+
+public function store($request): Model
+{
+    return $this-&gt;userRepository-&gt;create([
+        'name' =&gt; $request-&gt;name,
+    ]);
+}
+
+public function update(int $id, $request): Model
+{
+    // $user = $this-&gt;userRepository-&gt;findOrFail($id, ['*']);
+    // return $this-&gt;userRepository-&gt;updateCollection($user, ['name' =&gt; ...]);
+
+    return $this-&gt;userRepository-&gt;update($id, [
+        'name' =&gt; $request-&gt;name,
+    ]);
+}
+
+public function delete(int $id): bool
+{
+    // return $this-&gt;userRepository-&gt;forceDelete($id);
+    return $this-&gt;userRepository-&gt;delete($id);
+}
+
+public function restore(int $id): bool
+{
+    return $this-&gt;userRepository-&gt;restore($id); // Necessary SoftDelete
 }
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../configuration/" class="btn btn-neutral float-left" title="Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../usage/" class="btn btn-neutral float-right" title="Usage">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../quick-start/" class="btn btn-neutral float-left" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -144,10 +166,8 @@ public function show(int $id): Model
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../quick-start/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../usage/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

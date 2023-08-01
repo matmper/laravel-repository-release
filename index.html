@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><link rel="canonical" href="https://matheusp.com.br/laravel-repository-release/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><link rel="canonical" href="https://laravel-repository-release.matheusp.com.br/" />
       <link rel="shortcut icon" href="img/favicon.ico" />
     <title>laravel-repository-release</title>
     <link rel="stylesheet" href="css/theme.css" />
@@ -14,7 +14,7 @@
         // Current page data
         var mkdocs_page_name = "Home";
         var mkdocs_page_input_path = "index.md";
-        var mkdocs_page_url = "/laravel-repository-release/";
+        var mkdocs_page_url = "/";
       </script>
     
     <!--[if lt IE 9]>
@@ -46,11 +46,15 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="quick-start/">Quick Start</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="configuration/">Configuration</a>
+                <li class="toctree-l1"><a class="reference internal" href="usage/">Usage</a>
                 </li>
               </ul>
       </div>
@@ -78,18 +82,20 @@
               
                 <h1 id="laravel-repository-release-v1x">Laravel Repository Release - v1.x</h1>
 <p>Github: <a href="https://github.com/matmper/laravel-repository-release">matmper/laravel-repository-release</a></p>
+<p>Use the package to add a layer between modeling and services.</p>
 <h1 id="install">Install</h1>
-<p>Install this repository in your vendor path:</p>
+<p>Install this package with Composer:</p>
 <pre><code class="language-bash">$ composer require matmper/laravel-repository-release
 </code></pre>
-<p>Publish it to instance and create <code>/config/repository.php</code>:</p>
+<p>Use the command below to publish the package and generate the <code>/config/repository.php</code> file:
+ :</p>
 <pre><code class="language-bash">$ php artisan vendor:publish --provider=&quot;Matmper\Providers\RepositoryProvider&quot;
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="quick-start/" class="btn btn-neutral float-right" title="Quick Start">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="configuration/" class="btn btn-neutral float-right" title="Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -113,7 +119,7 @@
     
     
     
-      <span><a href="quick-start/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
@@ -133,5 +139,5 @@
 
 <!--
 MkDocs version : 1.5.1
-Build Date UTC : 2023-08-01 05:50:00.623835+00:00
+Build Date UTC : 2023-08-01 22:35:32.081062+00:00
 -->
