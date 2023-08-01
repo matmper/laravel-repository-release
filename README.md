@@ -68,28 +68,28 @@ public function __construct(private UserRepository $userRepository)
     //
 }
 
-public function index(): array
+public function index(): Collection
 {
     return $this->userRepository->get(
         ['id >' => 0], // where
         ['id', 'name'], // columns
         ['id' => 'DESC'] // order by
-    )->toArray();
+    );
 }
 
-public function show(int $id): array
+public function show(int $id): Model
 {
-    return $this->userRepository->findOrFail($id, ['id', 'name'])->toArray();
+    return $this->userRepository->findOrFail($id, ['id', 'name']);
 }
 
-public function store($request): array
+public function store($request): Model
 {
     return $this->userRepository->create([
         'name' => $request->name,
     ]);
 }
 
-public function update(int $id, $request): array
+public function update(int $id, $request): Model
 {
     // $user = $this->userRepository->findOrFail($id, ['*']);
     // return $this->userRepository->updateCollection($user, ['name' => ...]);
@@ -99,7 +99,7 @@ public function update(int $id, $request): array
     ]);
 }
 
-public function delete(int $id): array
+public function delete(int $id): bool
 {
     return $this->userRepository->delete($id);
 }
