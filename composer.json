@@ -53,7 +53,7 @@
             "@phpstan",
             "@tests"
         ],
-        "tests": "@php vendor/bin/phpunit -d memory_limit=256M --configuration phpunit.xml",
+        "tests": "@php vendor/bin/phpunit -d memory_limit=256M --do-not-cache-result --configuration phpunit.xml",
         "phpcbf": "@php vendor/bin/phpcbf",
         "phpcs": "@php vendor/bin/phpcs",
         "phpstan": "@php vendor/bin/phpstan analyse --memory-limit 256M",
