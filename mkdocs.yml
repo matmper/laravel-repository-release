@@ -1,0 +1,7 @@
+site_name: laravel-repository-release
+site_url: https://matheusp.com.br/laravel-repository-release
+nav:
+  - Home: index.md
+  - Quick Start: quick-start.md
+  - Configuration: configuration.md
+theme: readthedocs

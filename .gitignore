@@ -3,4 +3,5 @@ composer.phar
 /vendor/
 /coverage/
 /logs/
+/site/
 .DS_Store
