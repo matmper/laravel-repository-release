@@ -7,12 +7,12 @@
 namespace App\Repositories;
 
 use Matmper\Repositories\BaseRepository;
-use App\Models\User;
+use App\Models\Country;
 
-final class UserRepository extends BaseRepository
+final class CountryRepository extends BaseRepository
 {
     /**
-     * @var User
+     * @var Country
      */
-    protected $model = User::class;
+    protected $model = Country::class;
 }

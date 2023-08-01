@@ -101,7 +101,13 @@ public function update(int $id, $request): Model
 
 public function delete(int $id): bool
 {
+    // return $this->userRepository->forceDelete($id);
     return $this->userRepository->delete($id);
+}
+
+public function restore(int $id): bool
+{
+    return $this->userRepository->restore($id); // Necessary SoftDelete
 }
 ```
 

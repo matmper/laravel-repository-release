@@ -317,4 +317,22 @@ class UserRepositoryTest extends TestCase
         $validate = $repository->find($user->id);
         $this->assertNull($validate);
     }
+
+    /**
+     * @test force delete
+     */
+    public function test_force_delete(): void
+    {
+        $repository = new UserRepository;
+
+        $user = User::factory()->create();
+
+        $validate = $repository->find($user->id);
+        $this->assertNotEmpty($validate);
+
+        $repository->forceDelete($user->id);
+
+        $validate = $repository->withTrashed()->find($user->id);
+        $this->assertNull($validate);
+    }
 }
