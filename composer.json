@@ -1,18 +1,15 @@
 {
     "name": "matmper/laravel-repository-release",
     "description": "Package to simplify the use of repositories in Laravel",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "library",
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
         "ext-json": "*",
-        "illuminate/console": "^9.47.0 || ^10.0.0",
-        "illuminate/container": "^9.47.0 || ^10.0.0",
-        "illuminate/contracts": "^9.47.0 || ^10.0.0",
-        "illuminate/database": "^9.47.0 || ^10.0.0",
-        "illuminate/http": "^9.47.0 || ^10.0.0",
-        "illuminate/support": "^9.47.0 || ^10.0.0"
+        "illuminate/container": ">=9.1.5",
+        "illuminate/database": ">=9.1.5",
+        "illuminate/support": ">=9.1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
