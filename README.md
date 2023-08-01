@@ -1,6 +1,6 @@
-# Rest API - Users Transactions
+# Laravel Repository Release
 
-Package to simplify the use of repositories in Laravel
+Package to simplify the use of database repositories in Laravel
 
 <p align="center">
     <a href="http://makeapullrequest.com">
@@ -20,7 +20,7 @@ Package to simplify the use of repositories in Laravel
 
 # Install
 
-Install this repository in your vendor path:
+Install this database srepository in your vendor path:
 
 ```bash
 # install package
@@ -58,7 +58,7 @@ class UserRepository extends BaseRepository
 
 ## Documentation
 
-Access: [laravel-repository-release](https://matheusp.com.br/laravel-repository-release)
+Access: [laravel-repository-release](https://matmper.github.io/laravel-repository-release/)
 
 | laravel-repository-release version | Laravel versions |
 |---|---|
