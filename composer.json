@@ -1,0 +1,69 @@
+{
+    "name": "matmper/laravel-repository-release",
+    "description": "Package to simplify the use of repositories in Laravel",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0.2",
+        "ext-json": "*",
+        "illuminate/console": "^9.47.0 || ^10.0.0",
+        "illuminate/container": "^9.47.0 || ^10.0.0",
+        "illuminate/contracts": "^9.47.0 || ^10.0.0",
+        "illuminate/database": "^9.47.0 || ^10.0.0",
+        "illuminate/http": "^9.47.0 || ^10.0.0",
+        "illuminate/support": "^9.47.0 || ^10.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "squizlabs/php_codesniffer": "^3.5",
+        "orchestra/testbench": "^8.5",
+        "phpstan/phpstan": "^1.10"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "github.com/matmper",
+            "email": "contato@matheusp.com.br"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "src/"
+        ],
+        "psr-4": {
+            "Matmper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "tests/app/",
+            "Database\\Factories\\": "tests/database/factories/",
+            "Database\\Migrations\\": "tests/database/migrations/",
+            "Tests\\": "tests/Unit"
+        },
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "scripts": {
+        "check": [
+            "@phpcs",
+            "@phpstan",
+            "@tests"
+        ],
+        "tests": "@php vendor/bin/phpunit -d memory_limit=256M --do-not-cache-result --configuration phpunit.xml",
+        "phpcbf": "@php vendor/bin/phpcbf",
+        "phpcs": "@php vendor/bin/phpcs",
+        "phpstan": "@php vendor/bin/phpstan analyse --memory-limit 256M",
+        "post-autoload-dump": "@php vendor/bin/testbench package:discover --ansi"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Matmper\\Providers\\RepositoryProvider"
+            ]
+        }
+    }
+}
