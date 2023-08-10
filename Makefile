@@ -1,12 +1,3 @@
-migrate:
-	php artisan migrate
-
-migrate-rollback:
-	php artisan migrate:rollback
-
-migrate-fresh:
-	php artisan migrate:fresh --seed
-
 composer-install:
 	composer install
 
@@ -16,15 +7,11 @@ composer-update:
 composer-tests:
 	composer tests
 
-code-check:
-	composer phpstan
-	composer phpcs
+composer-check:
+	composer check
 
-phpcbf:
+composer-phpcbf:
 	composer phpcbf
-
-repository-create:
-	php artisan repository:create $(model)
 
 mkdocs-serve:
 	mkdocs serve

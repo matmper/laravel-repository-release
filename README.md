@@ -4,13 +4,13 @@ Package to simplify the use of database repositories in Laravel
 
 <p align="center">
     <a href="http://makeapullrequest.com">
-        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=square" alt="PRs Welcome">
     </a>
     <a href="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml?query=branch%3Amain+event%3Apush">
         <img src="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml/badge.svg?event=push" alt="License MIT">
     </a>
-    <a href="https://en.wikipedia.org/wiki/Proprietary_software">
-        <img src="https://img.shields.io/badge/license-Proprietary-blue.svg?style=flat-square" alt="License MIT">
+    <a href="https://opensource.org/license/mit/">
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=square" alt="License MIT">
     </a>
 </p>
 

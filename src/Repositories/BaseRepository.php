@@ -30,10 +30,18 @@ class BaseRepository
      */
     private $withTrashed = false;
 
+    /**
+     * Use Eloquent withoutTrashed method
+     *
+     * @var boolean
+     */
+    private $withoutTrashed = false;
+
     public function __construct()
     {
         $this->model = app($this->model);
         $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
+
         $this->withTrashed = $this->isSoftDelete && Config::get('repository.default.with_trashed', false);
     }
 
@@ -45,6 +53,17 @@ class BaseRepository
     public function withTrashed(): self
     {
         $this->withTrashed = $this->isSoftDelete;
+        return $this;
+    }
+
+    /**
+     * Set to use withoutTrashed() Eloquent method
+     *
+     * @return self
+     */
+    public function withoutTrashed(): self
+    {
+        $this->withoutTrashed = $this->isSoftDelete;
         return $this;
     }
 
@@ -334,12 +353,9 @@ class BaseRepository
      */
     public function forceDelete(int $itemPrimaryKey): bool
     {
-        $query = $this->query()->findOrFail($itemPrimaryKey, ['id']);
-
-        if ($this->isSoftDelete) {
-            /** @phpstan-ignore-next-line */
-            $query->withTrashed();
-        }
+        $query = $this->query();
+        $query = $this->validateAndSetBuildWithTrashed($query);
+        $query = $query->findOrFail($itemPrimaryKey, ['id']);
 
         return $query->forceDelete();
     }
@@ -354,17 +370,33 @@ class BaseRepository
      */
     private function getBaseQuery(array $where, array $columns = ['id'], array $orderBy = []): Builder
     {
-        $query = $this->query()->select($columns);
-
+        $query = $this->query();
         $query = $this->scopeMakeWhere($query, $where);
+        $query = $query->select($columns);
 
         foreach ($orderBy as $key => $value) {
             $query->orderBy($key, $value);
         }
         
+        $query = $this->validateAndSetBuildWithTrashed($query);
+
+        return $query;
+    }
+
+    /**
+     * Set with and without trashed query builder
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function validateAndSetBuildWithTrashed(Builder $query): Builder
+    {
         if ($this->withTrashed) {
-            /** @phpstan-ignore-next-line */
-            $query->withTrashed();
+            $query->withTrashed(); /** @phpstan-ignore-line */
+        }
+
+        if ($this->withoutTrashed) {
+            $query->withoutTrashed(); /** @phpstan-ignore-line */
         }
 
         return $query;
@@ -375,7 +407,7 @@ class BaseRepository
      *
      * @param Builder $query
      * @param array $where
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
     private function scopeMakeWhere(Builder $query, array $where): Builder
