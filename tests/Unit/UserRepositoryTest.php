@@ -335,4 +335,38 @@ class UserRepositoryTest extends TestCase
         $validate = $repository->withTrashed()->find($user->id);
         $this->assertNull($validate);
     }
+
+    /**
+     * @test with trashed and without trashed when config is false
+     */
+    public function test_with_and_without_trashed_config_false(): void
+    {
+        config(['repository.default.with_trashed' => false]);
+
+        $repository = new UserRepository;
+
+        $softUsers = User::factory(fake()->randomDigitNotNull())->create()->count();
+        $deletedUsers = User::factory(fake()->randomDigitNotNull())->softDeleted()->create()->count();
+        
+        $this->assertEquals($repository->count([]), $softUsers);
+        $this->assertEquals($repository->withTrashed()->count([]), ($softUsers + $deletedUsers));
+        $this->assertEquals($repository->withoutTrashed()->count([]), $softUsers);
+    }
+    
+    /**
+     * @test with trashed and without trashed when config is true
+     */
+    public function test_with_and_without_trashed_config_true(): void
+    {
+        config(['repository.default.with_trashed' => true]);
+
+        $repository = new UserRepository;
+
+        $softUsers = User::factory(fake()->randomDigitNotNull())->create()->count();
+        $deletedUsers = User::factory(fake()->randomDigitNotNull())->softDeleted()->create()->count();
+        
+        $this->assertEquals($repository->count([]), ($softUsers + $deletedUsers));
+        $this->assertEquals($repository->withTrashed()->count([]), ($softUsers + $deletedUsers));
+        $this->assertEquals($repository->withoutTrashed()->count([]), $softUsers);
+    }
 }

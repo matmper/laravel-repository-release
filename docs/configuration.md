@@ -1,19 +1,23 @@
-The configuration file will be created before package publish:
+# Configuration
+
+The configuration file is generated during package publishing:
 
 ```bash
 $ php artisan vendor:publish --provider="Matmper\Providers\RepositoryProvider"
 ```
 
-Config file: `config/repository.php`
+The command will generate the `config/repository.php` file with default settings
 
 ```php
-'default' => [
+<?php # config/repository.php
 
-    // paginate default count per page by default
-    'paginate' => env('REPOSITORY_DEFAULT_PAGINATE', 25),
+    'default' => [
 
-    // get results with trashed by default
-    'with_trashed' => env('REPOSITORY_WITH_TRASHED', false),
-    
-],
+        // default limit of results per page
+        'paginate' => env('REPOSITORY_DEFAULT_PAGINATE', 25),
+
+        // true = forces the use of the withTrashed() method by default
+        'with_trashed' => env('REPOSITORY_WITH_TRASHED', false),
+        
+    ],
 ```
