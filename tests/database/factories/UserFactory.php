@@ -33,4 +33,16 @@ class UserFactory extends Factory
             'password' => Hash::make('password'),
         ];
     }
+
+    /**
+     * Indicate that the user soft deleted
+     */
+    public function softDeleted(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'deleted_at' => now(),
+            ];
+        });
+    }
 }
