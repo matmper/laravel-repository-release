@@ -54,7 +54,9 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Usage</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#query-methoda">Query methoda</a>
+    <li class="toctree-l2"><a class="reference internal" href="#query-methods">Query methods</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#trashed-methods">Trashed Methods</a>
     </li>
     </ul>
                 </li>
@@ -96,21 +98,41 @@ public function __construct(private UserRepository $userRepository)
 <pre><code class="language-php">$userRepository = new \App\Repositories\UserRepository;
 $user = $userRepository-&gt;findOrFail(1);
 </code></pre>
-<h2 id="query-methoda">Query methoda</h2>
-<pre><code class="language-php">public function index(): Collection
+<h2 id="query-methods">Query methods</h2>
+<pre><code class="language-php">/**
+ * Get a model collection
+ * @return Collection
+ */
+public function index(): Collection
 {
     return $this-&gt;userRepository-&gt;get(
-        ['id &gt;' =&gt; 0], // where
-        ['id', 'name'], // columns
-        ['id' =&gt; 'DESC'] // order by
+        [
+            'role' =&gt; 'user',                   // users.role = 'user'
+            'name LIKE' =&gt; &quot;%A%&quot;,               // &amp;&amp; users.name LIKE &quot;%A%&quot;
+            'id NOT IN' =&gt; [1,2,3],             // &amp;&amp; users.id NOT IN (1,2,3)
+            'created_at &gt;=' =&gt; date('Y-m-d'),   // &amp;&amp; users.created &gt;= now()
+        ],
+        ['id', 'name'],                         // select columns names
+        ['name' =&gt; 'ASC', 'id' =&gt; 'DESC']       // order by
     );
 }
 
+/**
+ * Get a single line from the database
+ * @return \Illuminate\Database\Eloquent\Model
+ */
 public function show(int $id): Model
 {
+    // $this-&gt;userRepository-&gt;find($id);
+    // $this-&gt;userRepository-&gt;first(['id' =&gt; $id]);
+    // $this-&gt;userRepository-&gt;firstOrFail(['id' =&gt; $id]);
     return $this-&gt;userRepository-&gt;findOrFail($id, ['id', 'name']);
 }
 
+/**
+ * Store a new database row
+ * @return \Illuminate\Database\Eloquent\Model
+ */
 public function store($request): Model
 {
     return $this-&gt;userRepository-&gt;create([
@@ -118,6 +140,10 @@ public function store($request): Model
     ]);
 }
 
+/**
+ * Update a database row by primary key
+ * @return \Illuminate\Database\Eloquent\Model
+ */
 public function update(int $id, $request): Model
 {
     // $user = $this-&gt;userRepository-&gt;findOrFail($id, ['*']);
@@ -128,15 +154,44 @@ public function update(int $id, $request): Model
     ]);
 }
 
+/**
+ * Delete a database row
+ * @return boolean
+ */
 public function delete(int $id): bool
 {
-    // return $this-&gt;userRepository-&gt;forceDelete($id);
+    // $this-&gt;userRepository-&gt;forceDelete($id);
     return $this-&gt;userRepository-&gt;delete($id);
 }
 
+/**
+ * Restores data by clearing the soft delete field
+ * @return boolean
+ */
 public function restore(int $id): bool
 {
     return $this-&gt;userRepository-&gt;restore($id); // Necessary SoftDelete
+}
+</code></pre>
+<h2 id="trashed-methods">Trashed Methods</h2>
+<p>Capture deleted or not deleted data:
+Models with soft delete can use the <code>withTrashed</code> and <code>withoutTrashed</code> methods.</p>
+<pre><code class="language-php">/**
+ * Return all users even with the soft deleted field populated
+ * @return \Illuminate\Database\Eloquent\Model
+ */
+public function index(int $id): Model
+{
+    return $this-&gt;userRepository-&gt;withTrash()-&gt;get();
+}
+
+/**
+ * Returns the user if soft deleted column is null
+ * @return \Illuminate\Database\Eloquent\Model
+ */
+public function show(int $id): Model
+{
+    return $this-&gt;userRepository-&gt;withouTrash()-&gt;findOrFail($id);
 }
 </code></pre>
               
