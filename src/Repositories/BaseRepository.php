@@ -334,11 +334,8 @@ class BaseRepository
         if (!$this->isSoftDelete) {
             throw new \Matmper\Exceptions\OnlyModelsWithSoftDeleteException('restore');
         }
-        
-        return $this->query()
-            ->withTrashed()
-            ->findOrFail($itemPrimaryKey, $this->modelPrimaryKey)
-            ->restore();
+
+        return $this->withTrashed()->findOrFail($itemPrimaryKey, [])->restore(); /** @phpstan-ignore-line */
     }
 
     /**
@@ -350,9 +347,7 @@ class BaseRepository
      */
     public function delete(int $itemPrimaryKey): bool
     {
-        return $this->query()
-            ->findOrFail($itemPrimaryKey, $this->modelPrimaryKey)
-            ->delete();
+        return $this->findOrFail($itemPrimaryKey, [])->delete();
     }
 
     /**
@@ -364,11 +359,7 @@ class BaseRepository
      */
     public function forceDelete(int $itemPrimaryKey): bool
     {
-        $query = $this->query();
-
-        $this->validateAndSetBuildWithTrashed($query);
-
-        return $query->findOrFail($itemPrimaryKey, $this->modelPrimaryKey)->forceDelete();
+        return $this->findOrFail($itemPrimaryKey, [])->forceDelete();
     }
 
     /**
@@ -442,7 +433,7 @@ class BaseRepository
      * Create order by query builder
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $columns
+     * @param array $orderBy
      * @return void
      */
     private function scopeMakeOrderBy(Builder &$query, array $orderBy): void
