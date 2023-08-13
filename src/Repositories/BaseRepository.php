@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Config;
 use Matmper\Exceptions\EmptyArrayDataException;
 
 class BaseRepository
@@ -15,6 +14,13 @@ class BaseRepository
      * @var Model
      */
     protected $model;
+
+    /**
+     * Primary key column name
+     *
+     * @var string
+     */
+    protected $modelPrimaryKey;
 
     /**
      * Check if model has soft delete trait
@@ -40,9 +46,9 @@ class BaseRepository
     public function __construct()
     {
         $this->model = app($this->model);
+        $this->modelPrimaryKey = $this->model->getKeyName();
         $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
-
-        $this->withTrashed = $this->isSoftDelete && Config::get('repository.default.with_trashed', false);
+        $this->withTrashed = $this->isSoftDelete && config('repository.default.with_trashed', false);
     }
 
     /**
@@ -84,7 +90,7 @@ class BaseRepository
      * @param array $columns
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function find(int $id, array $columns = ['id']): ?Model
+    public function find(int $id, array $columns = []): ?Model
     {
         $query = $this->getBaseQuery([], $columns, []);
         
@@ -99,7 +105,7 @@ class BaseRepository
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
-    public function findOrFail(int $id, array $columns = ['id']): Model
+    public function findOrFail(int $id, array $columns = []): Model
     {
         $query = $this->getBaseQuery([], $columns, []);
         
@@ -114,7 +120,7 @@ class BaseRepository
      * @param array $orderBy
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function first(array $where, array $columns = ['id'], array $orderBy = []): ?Model
+    public function first(array $where, array $columns = [], array $orderBy = []): ?Model
     {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
         
@@ -130,7 +136,7 @@ class BaseRepository
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
-    public function firstOrFail(array $where, array $columns = ['id'], array $orderBy = []): Model
+    public function firstOrFail(array $where, array $columns = [], array $orderBy = []): Model
     {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
         
@@ -147,7 +153,7 @@ class BaseRepository
      */
     public function get(
         array $where,
-        array $columns = ['id'],
+        array $columns = [],
         array $orderBy = [],
     ): Collection {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
@@ -165,7 +171,7 @@ class BaseRepository
      */
     public function getToBase(
         array $where,
-        array $columns = ['id'],
+        array $columns = [],
         array $orderBy = [],
     ): \Illuminate\Support\Collection {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
@@ -184,11 +190,11 @@ class BaseRepository
      */
     public function paginate(
         array $where,
-        array $columns = ['id'],
+        array $columns = [],
         array $orderBy = [],
         int $limit = 0,
     ): LengthAwarePaginator {
-        $limit = $limit > 0 ? $limit : Config::get('repository.default.paginate', 25);
+        $limit = $limit > 0 ? $limit : config('repository.default.paginate', 25);
         $query = $this->getBaseQuery($where, $columns, $orderBy);
 
         return $query->paginate($limit);
@@ -202,7 +208,7 @@ class BaseRepository
      */
     public function count(array $where): int
     {
-        $query = $this->getBaseQuery($where, ['id'], []);
+        $query = $this->getBaseQuery($where, [], []);
         
         return $query->count();
     }
@@ -288,6 +294,7 @@ class BaseRepository
         }
 
         $item = $this->findOrFail($itemPrimaryKey, ['*']);
+
         return $this->updateCollection($item, $data);
     }
 
@@ -327,9 +334,8 @@ class BaseRepository
         if (!$this->isSoftDelete) {
             throw new \Matmper\Exceptions\OnlyModelsWithSoftDeleteException('restore');
         }
-        
-        /** @phpstan-ignore-next-line */
-        return $this->query()->withTrashed()->findOrFail($itemPrimaryKey)->restore();
+
+        return $this->withTrashed()->findOrFail($itemPrimaryKey, [])->restore(); /** @phpstan-ignore-line */
     }
 
     /**
@@ -341,7 +347,7 @@ class BaseRepository
      */
     public function delete(int $itemPrimaryKey): bool
     {
-        return $this->query()->findOrFail($itemPrimaryKey, ['id'])->delete();
+        return $this->findOrFail($itemPrimaryKey, [])->delete();
     }
 
     /**
@@ -353,11 +359,7 @@ class BaseRepository
      */
     public function forceDelete(int $itemPrimaryKey): bool
     {
-        $query = $this->query();
-        $query = $this->validateAndSetBuildWithTrashed($query);
-        $query = $query->findOrFail($itemPrimaryKey, ['id']);
-
-        return $query->forceDelete();
+        return $this->findOrFail($itemPrimaryKey, [])->forceDelete();
     }
 
     /**
@@ -368,49 +370,40 @@ class BaseRepository
      * @param array $orderBy
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function getBaseQuery(array $where, array $columns = ['id'], array $orderBy = []): Builder
+    private function getBaseQuery(array $where, array $columns, array $orderBy): Builder
     {
         $query = $this->query();
-        $query = $this->scopeMakeWhere($query, $where);
-        $query = $query->select($columns);
-
-        foreach ($orderBy as $key => $value) {
-            $query->orderBy($key, $value);
-        }
         
-        $query = $this->validateAndSetBuildWithTrashed($query);
+        $this->scopeMakeSelect($query, $columns);
+        $this->scopeMakeWhere($query, $where);
+        $this->scopeMakeOrderBy($query, $orderBy);
+        $this->validateAndSetBuildWithTrashed($query);
 
         return $query;
     }
 
     /**
-     * Set with and without trashed query builder
+     * Create select columns query builder
      *
-     * @param Builder $query
-     * @return Builder
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $columns
+     * @return void
      */
-    public function validateAndSetBuildWithTrashed(Builder $query): Builder
+    private function scopeMakeSelect(Builder &$query, array $columns): void
     {
-        if ($this->withTrashed) {
-            $query->withTrashed(); /** @phpstan-ignore-line */
-        }
-
-        if ($this->withoutTrashed) {
-            $query->withoutTrashed(); /** @phpstan-ignore-line */
-        }
-
-        return $query;
+        $columns = !empty($columns) ? $columns : $this->model->getKeyName();
+        $query->select($columns);
     }
 
     /**
-     * Create where conditionals
+     * Create where conditionals query builder
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param array $where
-     * @return Builder
+     * @return void
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
-    private function scopeMakeWhere(Builder $query, array $where): Builder
+    private function scopeMakeWhere(Builder &$query, array $where): void
     {
         foreach ($where as $key => $value) {
             $keyExplode = explode(' ', trim($key));
@@ -434,7 +427,34 @@ class BaseRepository
                 $query->where($column, $operator, $value);
             }
         }
+    }
 
-        return $query;
+    /**
+     * Create order by query builder
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderBy
+     * @return void
+     */
+    private function scopeMakeOrderBy(Builder &$query, array $orderBy): void
+    {
+        foreach ($orderBy as $key => $value) {
+            $query->orderBy($key, $value);
+        }
+    }
+
+    /**
+     * Set with and without trashed query builder
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return void
+     */
+    public function validateAndSetBuildWithTrashed(Builder &$query)
+    {
+        if ($this->withoutTrashed) {
+            $query->withoutTrashed(); /** @phpstan-ignore-line */
+        } elseif ($this->withTrashed) {
+            $query->withTrashed(); /** @phpstan-ignore-line */
+        }
     }
 }
