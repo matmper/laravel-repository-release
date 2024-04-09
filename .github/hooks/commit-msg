@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+message="$(cat $1)"
+requiredPattern="^(feat|fix|refactor|docs|test|chore|style|build|revert): .*$"
+
+if ! [[ $message =~ $requiredPattern ]];
+then
+  echo "Invalid commit message, follow the pattern below"
+  echo "<commit_type>: <commit_message>"
+  echo "Example - feat: adding new loading button"
+  echo "Allowed commit types: feat, fix, refactor, docs, test, chore, style, build, revert"
+  exit 1
+fi
