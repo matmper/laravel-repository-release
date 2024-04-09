@@ -1,0 +1,33 @@
+name: "Github Pages"
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  laravel-brazil-validation-documentation:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Upgrade pip
+        run: python3 -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: python3 -m pip install mkdocs-material
+
+      - name: Build
+        run: mkdocs build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+        env:
+          CONFIG_FILE: docs/mkdocs.yml

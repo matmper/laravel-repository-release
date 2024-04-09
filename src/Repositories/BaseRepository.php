@@ -87,13 +87,13 @@ class BaseRepository
      * Eloquent model: find
      *
      * @param integer $id
-     * @param array $columns
+     * @param array<string> $columns
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function find(int $id, array $columns = []): ?Model
     {
         $query = $this->getBaseQuery([], $columns, []);
-        
+
         return $query->find($id);
     }
 
@@ -101,54 +101,54 @@ class BaseRepository
      *  Eloquent model: findOrFail
      *
      * @param integer $id
-     * @param array $columns
+     * @param array<string> $columns
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public function findOrFail(int $id, array $columns = []): Model
     {
         $query = $this->getBaseQuery([], $columns, []);
-        
+
         return $query->findOrFail($id);
     }
 
     /**
      * Eloquent model: first
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function first(array $where, array $columns = [], array $orderBy = []): ?Model
     {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
-        
+
         return $query->first();
     }
 
     /**
      * Eloquent model: firstOrFail
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public function firstOrFail(array $where, array $columns = [], array $orderBy = []): Model
     {
         $query = $this->getBaseQuery($where, $columns, $orderBy);
-        
+
         return $query->firstOrFail();
     }
 
     /**
      * Eloquent model: get
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function get(
@@ -164,9 +164,9 @@ class BaseRepository
     /**
      * Eloquent model: get to base
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @return \Illuminate\Support\Collection
      */
     public function getToBase(
@@ -182,9 +182,9 @@ class BaseRepository
     /**
      * Eloquent model: paginate
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @param int $limit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
@@ -203,20 +203,20 @@ class BaseRepository
     /**
      * Eloquent model: count
      *
-     * @param array $where
+     * @param array<string, mixed> $where
      * @return integer
      */
     public function count(array $where): int
     {
         $query = $this->getBaseQuery($where, [], []);
-        
+
         return $query->count();
     }
 
     /**
      * Eloquent model: create (single row)
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -232,7 +232,7 @@ class BaseRepository
     /**
      * Eloquent model: insert (multiple rows)
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return boolean
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -248,8 +248,8 @@ class BaseRepository
     /**
      * Eloquent model: firstOrCreate
      *
-     * @param array $where
-     * @param array $fields
+     * @param array<string, mixed> $where
+     * @param array<string, mixed> $fields
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -258,15 +258,15 @@ class BaseRepository
         if (empty($where)) {
             throw new EmptyArrayDataException('$where');
         }
-        
+
         return $this->query()->firstOrCreate($where, $fields);
     }
 
     /**
      * Eloquent model: updateOrCreate
      *
-     * @param array $where
-     * @param array $fields
+     * @param array<string, mixed> $where
+     * @param array<string, mixed> $fields
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -275,7 +275,7 @@ class BaseRepository
         if (empty($where)) {
             throw new EmptyArrayDataException('$where');
         }
-        
+
         return $this->query()->updateOrCreate($where, $fields);
     }
 
@@ -283,7 +283,7 @@ class BaseRepository
      * Eloquent model: update (row by primary key)
      *
      * @param integer $itemPrimaryKey
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -302,7 +302,7 @@ class BaseRepository
      * Eloquent model: update save (collection)
      *
      * @param \Illuminate\Database\Eloquent\Model $item
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -365,15 +365,15 @@ class BaseRepository
     /**
      * Create base query builder
      *
-     * @param array $where
-     * @param array $columns
-     * @param array $orderBy
+     * @param array<string, mixed> $where
+     * @param array<string> $columns
+     * @param array<string, string> $orderBy
      * @return \Illuminate\Database\Eloquent\Builder
      */
     private function getBaseQuery(array $where, array $columns, array $orderBy): Builder
     {
         $query = $this->query();
-        
+
         $this->scopeMakeSelect($query, $columns);
         $this->scopeMakeWhere($query, $where);
         $this->scopeMakeOrderBy($query, $orderBy);
@@ -386,7 +386,7 @@ class BaseRepository
      * Create select columns query builder
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $columns
+     * @param array<string> $columns
      * @return void
      */
     private function scopeMakeSelect(Builder &$query, array $columns): void
@@ -399,7 +399,7 @@ class BaseRepository
      * Create where conditionals query builder
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $where
+     * @param array<string, mixed> $where
      * @return void
      * @throws \Matmper\Exceptions\EmptyArrayDataException
      */
@@ -433,7 +433,7 @@ class BaseRepository
      * Create order by query builder
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderBy
+     * @param array<string, string> $orderBy
      * @return void
      */
     private function scopeMakeOrderBy(Builder &$query, array $orderBy): void
