@@ -2,13 +2,13 @@
 
 Package to simplify the use of database repositories in Laravel
 
-<a href="https://github.com/matmper/laravel-repository-release/pulls" target="_blank">>
+<a href="https://github.com/matmper/laravel-repository-release/pulls" target="_blank">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome">
 </a>
-<a href="https://packagist.org/packages/matmper/laravel-repository-release" target="_blank">>
+<a href="https://packagist.org/packages/matmper/laravel-repository-release" target="_blank">
     <img src="https://img.shields.io/packagist/v/matmper/laravel-repository-release?style=for-the-badge&color=%23b6e673" alt="Packagist">
 </a>
-<a href="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml?query=branch%3Amain" target="_blank">>
+<a href="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml?query=branch%3Amain" target="_blank">
     <img src="https://img.shields.io/github/actions/workflow/status/matmper/laravel-repository-release/github_actions.yml?branch=main&style=for-the-badge" alt="Github Actions">
 </a>
 <a href="https://opensource.org/license/mit/" target="_blank">
