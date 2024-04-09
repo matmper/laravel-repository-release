@@ -2,17 +2,18 @@
 
 Package to simplify the use of database repositories in Laravel
 
-<p align="center">
-    <a href="http://makeapullrequest.com">
-        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=square" alt="PRs Welcome">
-    </a>
-    <a href="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml?query=branch%3Amain+event%3Apush">
-        <img src="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml/badge.svg?event=push" alt="License MIT">
-    </a>
-    <a href="https://opensource.org/license/mit/">
-        <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=square" alt="License MIT">
-    </a>
-</p>
+<a href="https://github.com/matmper/laravel-repository-release/pulls" target="_blank">>
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome">
+</a>
+<a href="https://packagist.org/packages/matmper/laravel-repository-release" target="_blank">>
+    <img src="https://img.shields.io/packagist/v/matmper/laravel-repository-release?style=for-the-badge&color=%23b6e673" alt="Packagist">
+</a>
+<a href="https://github.com/matmper/laravel-repository-release/actions/workflows/github_actions.yml?query=branch%3Amain" target="_blank">>
+    <img src="https://img.shields.io/github/actions/workflow/status/matmper/laravel-repository-release/github_actions.yml?branch=main&style=for-the-badge" alt="Github Actions">
+</a>
+<a href="https://opensource.org/license/mit/" target="_blank">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License MIT">
+</a>
 
 # Dependences
 - PHP >= 8.0.2 ([Doc](https://www.php.net/releases/8.0/pt_BR.php))
@@ -62,7 +63,7 @@ Access: [laravel-repository-release](https://matmper.github.io/laravel-repositor
 
 | laravel-repository-release version | Laravel versions |
 |---|---|
-| 1.x  | 9 / 10 |
+| 1.x  | 9 / 10 / 11 |
 
 ## Contribution & Development
 
