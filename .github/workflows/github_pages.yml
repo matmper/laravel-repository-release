@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  laravel-brazil-validation-documentation:
+  laravel-repository-release:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2

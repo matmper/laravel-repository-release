@@ -1,5 +1,5 @@
 site_name: laravel-repository-release
-site_url: https://laravel-repository-release.matheusp.com.br
+site_url: https://matmper.github.io/laravel-repository-release
 nav:
   - Home: index.md
   - Configuration: configuration.md

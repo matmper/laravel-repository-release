@@ -45,9 +45,7 @@ class BaseRepository
 
     public function __construct()
     {
-        $this->modelPrimaryKey = $this->model->getKeyName();
-        $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
-        $this->withTrashed = $this->isSoftDelete && config('repository.default.with_trashed', false);
+        $this->load();
     }
 
     /**
@@ -448,12 +446,28 @@ class BaseRepository
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return void
      */
-    public function validateAndSetBuildWithTrashed(Builder &$query)
+    private function validateAndSetBuildWithTrashed(Builder &$query)
     {
         if ($this->withoutTrashed) {
             $query->withoutTrashed(); /** @phpstan-ignore-line */
         } elseif ($this->withTrashed) {
             $query->withTrashed(); /** @phpstan-ignore-line */
         }
+    }
+
+    /**
+     * Instance and init
+     *
+     * @return void
+     */
+    private function load(): void
+    {
+        if (! ($this->model instanceof Model)) {
+            $this->model = app()->make($this->model);
+        }
+
+        $this->modelPrimaryKey = $this->model->getKeyName();
+        $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
+        $this->withTrashed = $this->isSoftDelete && config('repository.default.with_trashed', false);
     }
 }
