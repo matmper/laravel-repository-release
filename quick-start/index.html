@@ -95,14 +95,19 @@
 <pre><code class="language-php">namespace App\Repositories;
 
 use Matmper\Repositories\BaseRepository;
-use App\Models\User;
 
 final class UserRepository extends BaseRepository
 {
     /**
-     * @var User
+     * @var \App\Models\User;
      */
-    protected $model = User::class;
+    protected $model;
+
+    public function __construct()
+    {
+        $this-&gt;model = new \App\Models\User();
+        parent::__construct();
+    }
 }
 </code></pre>
 <h1 id="simplified-use">Simplified use</h1>
