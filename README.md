@@ -29,7 +29,7 @@ $ composer require matmper/laravel-repository-release
 
 # publish package
 $ php artisan vendor:publish --provider="Matmper\Providers\RepositoryProvider"
-````
+```
 
 # Usage
 
@@ -40,21 +40,6 @@ $ php artisan repository:create User
 
 # create all pending model repositories files
 $ php artisan repository:create all
-```
-
-Repository file example:
-```php
-// app/Repositories/UserRepository.php
-
-namespace App\Repositories;
-
-use Matmper\Repositories\BaseRepository;
-use App\Models\User;
-
-class UserRepository extends BaseRepository
-{
-    protected $model = User::class;
-}
 ```
 
 ## Documentation
