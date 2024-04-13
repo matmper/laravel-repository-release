@@ -12,17 +12,22 @@ class CreateRepositoryFile
  * Created by github.com/matmper/laravel-repository-release
  */
 
-namespace App\Repositories;
+namespace App\\Repositories;
 
 use Matmper\\Repositories\\BaseRepository;
-use App\Models\\{$modelName};
 
 final class {$modelName}Repository extends BaseRepository
 {
     /**
-     * @var {$modelName}
+     * @var \\App\\Models\\{$modelName};
      */
-    protected \$model = {$modelName}::class;
+    protected \$model;
+
+    public function __construct()
+    {
+        \$this->model = new \\App\\Models\\{$modelName}();
+        parent::__construct();
+    }
 }
 ";
     }

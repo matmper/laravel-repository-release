@@ -45,7 +45,6 @@ class BaseRepository
 
     public function __construct()
     {
-        $this->model = app($this->model);
         $this->modelPrimaryKey = $this->model->getKeyName();
         $this->isSoftDelete = method_exists($this->model, 'initializeSoftDeletes');
         $this->withTrashed = $this->isSoftDelete && config('repository.default.with_trashed', false);
