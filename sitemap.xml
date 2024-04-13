@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://laravel-repository-release.matheusp.com.br/</loc>
+         <loc>https://matmper.github.io/laravel-repository-release/</loc>
          <lastmod>2024-04-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://laravel-repository-release.matheusp.com.br/configuration/</loc>
+         <loc>https://matmper.github.io/laravel-repository-release/configuration/</loc>
          <lastmod>2024-04-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://laravel-repository-release.matheusp.com.br/quick-start/</loc>
+         <loc>https://matmper.github.io/laravel-repository-release/quick-start/</loc>
          <lastmod>2024-04-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://laravel-repository-release.matheusp.com.br/usage/</loc>
+         <loc>https://matmper.github.io/laravel-repository-release/usage/</loc>
          <lastmod>2024-04-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
