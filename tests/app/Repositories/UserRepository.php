@@ -7,12 +7,17 @@
 namespace App\Repositories;
 
 use Matmper\Repositories\BaseRepository;
-use App\Models\User;
 
 final class UserRepository extends BaseRepository
 {
     /**
-     * @var User
+     * @var \App\Models\User;
      */
-    protected $model = User::class;
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = new \App\Models\User();
+        parent::__construct();
+    }
 }

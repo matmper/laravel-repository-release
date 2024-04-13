@@ -7,12 +7,17 @@
 namespace App\Repositories;
 
 use Matmper\Repositories\BaseRepository;
-use App\Models\Country;
 
 final class CountryRepository extends BaseRepository
 {
     /**
-     * @var Country
+     * @var \App\Models\Country;
      */
-    protected $model = Country::class;
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = new \App\Models\Country();
+        parent::__construct();
+    }
 }
